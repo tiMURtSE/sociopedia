@@ -59,13 +59,28 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-    const [isLoginPage, setIsLoginPage] = useState(false    );
+    const [isLoginPage, setIsLoginPage] = useState(false);
     const { palette } = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isMobileScreen = useMediaQuery('(max-width: 600px)');
 
-    const handleFormSubmit = async (values, onSubmitProps) => {};   
+    const register = async (values, onSubmitProps) => {
+        const formData = new FormData();
+        console.log(values)
+        // for (let value in values) {
+        //     formData.append(value, values[value]);
+        // }
+    };
+
+    const handleFormSubmit = async (values, onSubmitProps) => {
+        console.log('dsada');
+        if (isLoginPage) {
+            // await login(values, onSubmitProps);
+        } else {
+            await register(values, onSubmitProps);
+        }
+    };   
     return (
         <Formik
             initialValues={isLoginPage ? initialValuesLogin : initialValuesRegister}
@@ -94,26 +109,24 @@ const Form = () => {
                                 }
                             }}
                         >
-                            {isLoginPage ? (
-                                <div></div>
-                            ) : (
+                            {!isLoginPage && (
                                 <>
                                     <TextField
-                                        label='First Name'
+                                        label="First Name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         value={values.firstName}
-                                        name='firstName'
+                                        name="firstName"
                                         error={Boolean(touched.firstName) && Boolean(errors.firstName)}
                                         helperText={touched.firstName && errors.firstName}
-                                        sx={{ gridColumn: 'span 2' }}
+                                        sx={{ gridColumn: "span 2" }}
                                     />
                                     <TextField
-                                        label='Last Name'
+                                        label="Last Name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         value={values.lastName}
-                                        name='lastName'
+                                        name="lastName"
                                         error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                                         helperText={touched.lastName && errors.lastName}
                                         sx={{ gridColumn: '3 / span 2' }}
@@ -138,8 +151,98 @@ const Form = () => {
                                         helperText={touched.occupation && errors.occupation}
                                         sx={{ gridColumn: 'span 4' }}
                                     />
+                                    <Box
+                                        gridColumn="span 4"
+                                        border={`1px solid ${palette.neutral.medium}`}
+                                        borderRadius="5px"
+                                        p="1rem"
+                                        >
+                                        <Dropzone
+                                            acceptedFiles=".jpg,.jpeg,.png"
+                                            multiple={false}
+                                            onDrop={(acceptedFiles) =>
+                                            setFieldValue("picture", acceptedFiles[0])
+                                            }
+                                        >
+                                            {({ getRootProps, getInputProps }) => (
+                                            <Box
+                                                {...getRootProps()}
+                                                border={`2px dashed ${palette.primary.main}`}
+                                                p="1rem"
+                                                sx={{ "&:hover": { cursor: "pointer" } }}
+                                            >
+                                                <input {...getInputProps()} />
+                                                {!values.picture ? (
+                                                <p>Add Picture Here</p>
+                                                ) : (
+                                                <FlexBetween>
+                                                    <Typography>{values.picture.name}</Typography>
+                                                    <EditOutlinedIcon />
+                                                </FlexBetween>
+                                                )}
+                                            </Box>
+                                            )}
+                                        </Dropzone>
+                                        </Box>
                                 </>
                             )}
+
+                            <TextField
+                                label="Email"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.email}
+                                name="email"
+                                error={Boolean(touched.email) && Boolean(errors.email)}
+                                helperText={touched.email && errors.email}
+                                sx={{ gridColumn: "span 4" }}
+                            />
+                            <TextField
+                                label="Password"
+                                type="password"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.password}
+                                name="password"
+                                error={Boolean(touched.password) && Boolean(errors.password)}
+                                helperText={touched.password && errors.password}
+                                sx={{ gridColumn: "span 4" }}
+                            />
+
+                            <Box>
+                                <Button
+                                    fullWidth
+                                    type='submit'
+                                    sx={{
+                                        m: '2rem 0',
+                                        p: '1rem 0',
+                                        backgroundColor: palette.primary.main,
+                                        color: palette.background.alt,
+                                        '&:hover': { backgroundColor: palette.primary.dark },
+                                    }}
+                                >
+                                    {isLoginPage ? 'LOG IN' : 'REGISTER'}
+                                </Button>
+                                <Typography
+                                    onClick={() => {
+                                        setIsLoginPage(!isLoginPage);
+                                        resetForm();
+                                    }}
+                                    sx={{
+                                        textDecoration: 'underline',
+                                        color: palette.primary.main,
+                                        "&:hover": {
+                                        cursor: "pointer",
+                                        color: palette.primary.light,
+                                        },
+                                    }}
+                                >
+                                    {isLoginPage
+                                    ? 'Don\'t have an account? Sign up here.' 
+                                    : 'Already have an account? Login here.'
+                                    }
+                                </Typography>
+                            </Box>
                         </Box>
                     </form>
                 )
