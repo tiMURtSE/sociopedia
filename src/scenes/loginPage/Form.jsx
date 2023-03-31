@@ -59,7 +59,7 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-    const [isLoginPage, setIsLoginPage] = useState(false);
+    const [isLoginPage, setIsLoginPage] = useState(true);
     const { palette } = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -67,16 +67,45 @@ const Form = () => {
 
     const register = async (values, onSubmitProps) => {
         const formData = new FormData();
-        console.log(values)
-        // for (let value in values) {
-        //     formData.append(value, values[value]);
-        // }
+
+        for (let value in values) {
+            formData.append(value, values[value]);
+        }
+        formData.append('picturePath', values.picture.name);
+
+        const response = await fetch('http://localhost:3001/auth/register', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const savedUser = await response.json();
+
+        if (savedUser) setIsLoginPage(true);
+        onSubmitProps.resetForm();
+    };
+
+    const login = async (values, onSubmitProps) => {
+        const response = await fetch('http://localhost:3001/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values),
+        });
+
+        const loggedIn = await response.json();
+
+        if (loggedIn) {
+            dispatch(setLogin({
+                user: loggedIn.user,
+                token: loggedIn.token,
+            }));
+            navigate('/home');
+        }
+        onSubmitProps.resetForm();
     };
 
     const handleFormSubmit = async (values, onSubmitProps) => {
-        console.log('dsada');
         if (isLoginPage) {
-            // await login(values, onSubmitProps);
+            await login(values, onSubmitProps);
         } else {
             await register(values, onSubmitProps);
         }
