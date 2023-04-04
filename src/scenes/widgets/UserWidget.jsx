@@ -52,7 +52,6 @@ const UserWidget = ({ userId, picturePath }) => {
 
     return (
         <WidgetWrapper
-            width={400}
         >
             <FlexBetween
                 gap='0.5rem'
