@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Navbar from 'scenes/navbar';
 import MyPostWidget from 'scenes/widgets/MyPostWidget';
+import PostsWidget from 'scenes/widgets/PostsWidget';
 import UserWidget from 'scenes/widgets/UserWidget';
 
 const HomePage = () => {
@@ -14,8 +15,10 @@ const HomePage = () => {
             <Navbar />
 
             <Box
-                display={isMobileScreen ? 'block' : 'flex'}
+                display={'flex'}
+                flexDirection={isMobileScreen ? 'column' : 'row'}
                 justifyContent='space-between'
+                gap={isMobileScreen ? '2rem' : '0.5rem'}
                 padding='2rem 6%'
             >
                 <Box flexBasis={isMobileScreen ? undefined : '26%'}>
@@ -23,7 +26,9 @@ const HomePage = () => {
                 </Box>
 
                 <Box flexBasis={isMobileScreen ? undefined : '42%'}>
-                    <MyPostWidget picturePath={picturePath} />
+                    <MyPostWidget userId={_id} picturePath={picturePath} />
+
+                    <PostsWidget userId={_id} isProfile={false}/>
                 </Box>
             </Box>
         </div>
