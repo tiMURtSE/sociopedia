@@ -41,7 +41,7 @@ const authSlice = createSlice({
         },
         setPosts: (state, action) => {
             state.posts = action.payload.posts;
-        }
+        },
     }
 });
 

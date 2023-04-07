@@ -17,7 +17,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         });
 
         const posts = await response.json();
-
         dispatch(setPosts({ posts }));
     };
 

@@ -4,7 +4,7 @@ import {
     FavoriteOutlined,
     ShareOutlined,
 } from "@mui/icons-material";
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography, Divider, useTheme } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
 import UserImage from "components/UserImage";
 import WidgetWrapper from 'components/WidgetWrapper';
@@ -45,7 +45,6 @@ const PostWidget = ({ post }) => {
         const updatedPost = await response.json();
 
         dispatch(setPost({ post: updatedPost }));
-        console.log(updatedPost)
         setLikesState(updatedPost.likes);
     };
 
@@ -75,7 +74,13 @@ const PostWidget = ({ post }) => {
             {/* DESCRIPTION */}
             <Typography>{description}</Typography>
 
-            <image width='100%' height='auto' src={`http://localhost:3001/assets/${picturePath}`} />
+            {(picturePath) && (
+                <img 
+                width='100%' 
+                height='auto' 
+                src={`http://localhost:3001/assets/${picturePath}`} 
+                alt='post image' />
+            )}
 
             {/* LIKES, COMMENTS, SHARE ROW */}
             <FlexBetween>
