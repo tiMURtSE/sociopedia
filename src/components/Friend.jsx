@@ -6,16 +6,57 @@ import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 
-const Friend = () => {
+const Friend = ({friendId, name, location, userPicturePath }) => {
+    const userId = useSelector((state) => state.user._id);
+    const friends = useSelector((state) => state.user.friends);
+    const isFriend = friends.find((friend) => friend._id === friendId);
+    const token = useSelector((state) => state.token);
+    const dispatch = useDispatch();
 
+    const addFriend = async () => {
+        const url = `http://localhost:3001/${userId}/${friendId}/add_friend`;
+       
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: { Authorization: `Bearer ${token}`},
+        });
+
+        const friends = await response.json();
+
+        dispatch(setFriends(friends));
+    };
+
+    const removeFriend = async () => {
+        const url = `http://localhost:3001/${userId}/${friendId}/remove_friend`;
+
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: { Authorization: `Bearer ${token}`},
+        });
+
+        const friends = await response.json();
+
+        dispatch(setFriends(friends));
+    };
 
     return (
         <FlexBetween>
             <FlexBetween>
+                <UserImage image={userPicturePath} />
 
+                <Box>
+                    <Typography>{name}</Typography>
+                    <Typography>{location}</Typography>
+                </Box>
             </FlexBetween>
 
-            <Box></Box>
+            <IconButton>
+                {isFriend ? (
+                    <PersonRemoveOutlined onClick={removeFriend} />
+                ) : (
+                    <PersonAddOutlined onClick={addFriend} />
+                )}
+            </IconButton>
         </FlexBetween>
     );
 };

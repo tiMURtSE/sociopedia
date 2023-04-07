@@ -6,6 +6,7 @@ import {
 } from "@mui/icons-material";
 import { Box, IconButton, Typography, Divider, useTheme } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
+import Friend from "components/Friend";
 import UserImage from "components/UserImage";
 import WidgetWrapper from 'components/WidgetWrapper';
 import React, { useState } from 'react';
@@ -17,7 +18,7 @@ const PostWidget = ({ post }) => {
     const token = useSelector((state) => state.token);
     const {
         _id,
-        userId,
+        userId: postUserId,
         firstName,
         lastName,
         picturePath,
@@ -27,19 +28,20 @@ const PostWidget = ({ post }) => {
         comments,
         likes,
     } = post;
+    // mojno bez useState
     const [likesState, setLikesState] = useState(likes);
 
     const likePost = async () => {
         const postId = _id;
         const url = `http://localhost:3001/posts/${postId}/like`;
-        console.log({userId})
+
         const response = await fetch(url, {
             method: 'PATCH',
             headers: { 
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ userId: userId }),
+            body: JSON.stringify({ postUserId }),
         });
 
         const updatedPost = await response.json();
@@ -51,25 +53,12 @@ const PostWidget = ({ post }) => {
     return (
         <WidgetWrapper>
             {/* PFP, NAME, ADD FRIEND BUTTON */}
-            <FlexBetween>
-                <FlexBetween
-                    gap='1rem'
-                >
-                    <UserImage image={userPicturePath}/>
-
-                    <Box>
-                        <Typography
-                            fontWeight='500'
-                        >
-                            {firstName} {lastName}
-                        </Typography>
-
-                        <Typography>{location}</Typography>
-                    </Box>
-                </FlexBetween>
-
-
-            </FlexBetween>
+            <Friend
+                friendId={postUserId}
+                name={`${firstName} ${lastName}`}
+                location={location}
+                userPicturePath={userPicturePath}
+            />
 
             {/* DESCRIPTION */}
             <Typography>{description}</Typography>

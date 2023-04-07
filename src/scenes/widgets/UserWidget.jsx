@@ -30,7 +30,6 @@ const UserWidget = ({ userId, picturePath }) => {
         });
 
         const user = await response.json();
-
         setUser(user);
     };
     

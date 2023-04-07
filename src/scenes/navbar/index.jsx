@@ -29,7 +29,7 @@ const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user);
     const isMobileScreen = useMediaQuery('(max-width: 1000px)');
 
     const theme = useTheme();
@@ -39,8 +39,7 @@ const Navbar = () => {
     const primaryDark = theme.palette.primary.dark;
     const alt = theme.palette.background.alt;
 
-    // const fullName = `${user.firstName} ${user.lastName}`;
-    const fullName = `John Doe`;
+    const fullName = `${user.firstName} ${user.lastName}`;
 
     return (
         <FlexBetween padding='1rem 6%' backgroundColor={alt}>
@@ -115,7 +114,7 @@ const Navbar = () => {
                         <MenuItem value={fullName}>
                             <Typography>{fullName}</Typography>
                         </MenuItem>
-                        <MenuItem onClick={() => dispatch(setLogout)}>Log Out</MenuItem>
+                        <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
                     </Select>
                 </FormControl>
             </FlexBetween>
