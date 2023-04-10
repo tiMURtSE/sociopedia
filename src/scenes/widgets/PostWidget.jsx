@@ -15,6 +15,7 @@ import { setPost } from "state";
 
 const PostWidget = ({ post }) => {
     const dispatch = useDispatch();
+    const userId = useSelector((state) => state.user._id);
     const token = useSelector((state) => state.token);
     const {
         _id,
@@ -28,8 +29,8 @@ const PostWidget = ({ post }) => {
         comments,
         likes,
     } = post;
-    // mojno bez useState
-    const [likesState, setLikesState] = useState(likes);
+    const isPostLiked = likes[userId];
+    const likeCount = Object.keys(likes).length;
 
     const likePost = async () => {
         const postId = _id;
@@ -41,18 +42,16 @@ const PostWidget = ({ post }) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ postUserId }),
+            body: JSON.stringify({ userId }),
         });
 
         const updatedPost = await response.json();
 
         dispatch(setPost({ post: updatedPost }));
-        setLikesState(updatedPost.likes);
     };
 
     return (
         <WidgetWrapper>
-            {/* PFP, NAME, ADD FRIEND BUTTON */}
             <Friend
                 friendId={postUserId}
                 name={`${firstName} ${lastName}`}
@@ -60,7 +59,6 @@ const PostWidget = ({ post }) => {
                 userPicturePath={userPicturePath}
             />
 
-            {/* DESCRIPTION */}
             <Typography>{description}</Typography>
 
             {(picturePath) && (
@@ -71,18 +69,22 @@ const PostWidget = ({ post }) => {
                 alt='post image' />
             )}
 
-            {/* LIKES, COMMENTS, SHARE ROW */}
             <FlexBetween>
-                <FlexBetween>
+                <FlexBetween gap='1rem'>
                     <FlexBetween>
                         <IconButton
                             onClick={likePost}
                         >
-                            <FavoriteOutlined />
+                            {isPostLiked ? (
+                                <FavoriteOutlined />
+                            ) : (
+                                <FavoriteBorderOutlined />
+                            )}
                         </IconButton>
 
-                        <Typography>{Object.keys(likesState).length}</Typography>
+                        <Typography>{likeCount}</Typography>
                     </FlexBetween>
+
                     <FlexBetween>
                         <IconButton>
                             <ChatBubbleOutlineOutlined />

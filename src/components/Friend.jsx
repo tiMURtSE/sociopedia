@@ -12,31 +12,37 @@ const Friend = ({friendId, name, location, userPicturePath }) => {
     const isFriend = friends.find((friend) => friend._id === friendId);
     const token = useSelector((state) => state.token);
     const dispatch = useDispatch();
+    const isLoggedInUser = (friendId === userId) ? true : false;
 
     const addFriend = async () => {
-        const url = `http://localhost:3001/${userId}/${friendId}/add_friend`;
+        const url = `http://localhost:3001/users/${userId}/${friendId}/add_friend`;
        
         const response = await fetch(url, {
             method: 'PATCH',
-            headers: { Authorization: `Bearer ${token}`},
+            headers: { 
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
         });
 
         const friends = await response.json();
-
-        dispatch(setFriends(friends));
+        dispatch(setFriends({ friends }));
     };
 
     const removeFriend = async () => {
-        const url = `http://localhost:3001/${userId}/${friendId}/remove_friend`;
+        const url = `http://localhost:3001/users/${userId}/${friendId}/remove_friend`;
 
         const response = await fetch(url, {
             method: 'PATCH',
-            headers: { Authorization: `Bearer ${token}`},
+            headers: { 
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
         });
 
         const friends = await response.json();
 
-        dispatch(setFriends(friends));
+        dispatch(setFriends({ friends }));
     };
 
     return (
@@ -51,10 +57,13 @@ const Friend = ({friendId, name, location, userPicturePath }) => {
             </FlexBetween>
 
             <IconButton>
-                {isFriend ? (
-                    <PersonRemoveOutlined onClick={removeFriend} />
-                ) : (
-                    <PersonAddOutlined onClick={addFriend} />
+                
+                {!isLoggedInUser && (
+                    isFriend ? (
+                        <PersonRemoveOutlined onClick={removeFriend} />
+                    ) : (
+                        <PersonAddOutlined onClick={addFriend} />
+                    )
                 )}
             </IconButton>
         </FlexBetween>

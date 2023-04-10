@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from 'state';
 import PostWidget from './PostWidget';
+import { Box } from '@mui/material';
 
 const PostsWidget = ({ userId, isProfile = false }) => {
     const posts = useSelector((state) => state.posts);
@@ -42,11 +43,13 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }, []);
 
     return (
-        <>
-            {posts.map(post =>
+        <Box display='flex' flexDirection='column' gap='1rem' mt='2rem'>
+            {[...posts]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map(post =>
                 <PostWidget post={post} key={post._id}/>    
             )}
-        </>
+        </Box>
     );
 };
 
