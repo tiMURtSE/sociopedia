@@ -9,9 +9,17 @@ import UserImage from "./UserImage";
 const Friend = ({friendId, name, location, userPicturePath }) => {
     const userId = useSelector((state) => state.user._id);
     const friends = useSelector((state) => state.user.friends);
-    const isFriend = friends.find((friend) => friend._id === friendId);
     const token = useSelector((state) => state.token);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { palette } = useTheme();
+    const primaryLight = palette.primary.light;
+    const primaryDark = palette.primary.dark;
+    const main = palette.neutral.main;
+    const medium = palette.neutral.medium;
+
+    const isFriend = friends.find((friend) => friend._id === friendId);
     const isLoggedInUser = (friendId === userId) ? true : false;
 
     const addFriend = async () => {
@@ -26,6 +34,7 @@ const Friend = ({friendId, name, location, userPicturePath }) => {
         });
 
         const friends = await response.json();
+
         dispatch(setFriends({ friends }));
     };
 
@@ -47,22 +56,40 @@ const Friend = ({friendId, name, location, userPicturePath }) => {
 
     return (
         <FlexBetween>
-            <FlexBetween>
-                <UserImage image={userPicturePath} />
+            <FlexBetween gap='1rem'>
+                <UserImage image={userPicturePath} size="55px" />
 
-                <Box>
-                    <Typography>{name}</Typography>
-                    <Typography>{location}</Typography>
+                <Box onClick={() => {
+                    navigate(`/profile/${friendId}`);
+                    navigate(0);
+                }}>
+                    <Typography
+                        color={main}
+                        variant="h5"
+                        fontWeight="500"
+                        sx={{
+                          "&:hover": {
+                            color: palette.primary.dark,
+                            cursor: "pointer",
+                          },
+                        }}
+                    >
+                        {name}
+                    </Typography>
+                    <Typography color={medium} fontSize='0.75rem'>
+                        {location}
+                    </Typography>
                 </Box>
             </FlexBetween>
 
-            <IconButton>
-                
+            <IconButton 
+                onClick={isFriend ? removeFriend : addFriend}
+            >
                 {!isLoggedInUser && (
                     isFriend ? (
-                        <PersonRemoveOutlined onClick={removeFriend} />
+                        <PersonRemoveOutlined sx={{ color: primaryDark }} />
                     ) : (
-                        <PersonAddOutlined onClick={addFriend} />
+                        <PersonAddOutlined sx={{ color: primaryDark }} />
                     )
                 )}
             </IconButton>

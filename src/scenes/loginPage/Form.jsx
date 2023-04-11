@@ -92,7 +92,7 @@ const Form = () => {
         });
 
         const loggedIn = await response.json();
-
+        console.log(loggedIn)
         if (loggedIn) {
             dispatch(setLogin({
                 user: loggedIn.user,
