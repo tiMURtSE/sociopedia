@@ -24,6 +24,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from 'state';
 import Dropzone from 'react-dropzone';
+import { mobileMediaQuery } from 'utils/consts';
 
 const MyPostWidget = ({ userId, picturePath }) => {
     const [post, setPost] = useState('');
@@ -31,7 +32,7 @@ const MyPostWidget = ({ userId, picturePath }) => {
     const [isImage, setIsImage] = useState(false);
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
-    const isMobileScreen = useMediaQuery('(max-width: 1000px)');
+    const isMobileScreen = useMediaQuery(mobileMediaQuery);
 
     const { palette } = useTheme();
     const mediumMain = palette.neutral.mediumMain;

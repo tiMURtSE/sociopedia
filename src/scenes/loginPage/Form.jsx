@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { mobileMediaQuery } from 'utils/consts';
 
 const registerSchema = yup.object().shape({
     firstName: yup.string()
@@ -63,7 +64,7 @@ const Form = () => {
     const { palette } = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isMobileScreen = useMediaQuery('(max-width: 600px)');
+    const isMobileScreen = useMediaQuery(mobileMediaQuery);
 
     const register = async (values, onSubmitProps) => {
         const formData = new FormData();

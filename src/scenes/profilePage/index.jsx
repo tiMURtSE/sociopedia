@@ -26,7 +26,7 @@ const ProfilePage = () => {
 
         setUser(user);
     };
-
+    
     useEffect(() => {
         getUser();
     }, []);

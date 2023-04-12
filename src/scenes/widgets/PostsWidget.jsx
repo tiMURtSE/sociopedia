@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from 'state';
 import PostWidget from './PostWidget';
 import { Box } from '@mui/material';
 
 const PostsWidget = ({ userId, isProfile = false }) => {
+    const [isProfilePostsLoading, setIsProfilePostsLoading] = useState(isProfile);
     const posts = useSelector((state) => state.posts);
     const token = useSelector((state) => state.token);
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         });
 
         const posts = await response.json();
+
         dispatch(setPosts({ posts }));
     };
 
@@ -32,6 +34,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         const posts = await response.json();
 
         dispatch(setPosts({ posts }));
+        setIsProfilePostsLoading(false);
     };
 
     useEffect(() => {
@@ -42,6 +45,8 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         }
     }, []);
 
+    if (isProfilePostsLoading) return null;
+    
     return (
         <Box display='flex' flexDirection='column' gap='1rem'>
             {[...posts]

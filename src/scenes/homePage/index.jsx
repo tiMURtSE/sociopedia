@@ -6,10 +6,11 @@ import FriendListWidget from 'scenes/widgets/FriendListWidget';
 import MyPostWidget from 'scenes/widgets/MyPostWidget';
 import PostsWidget from 'scenes/widgets/PostsWidget';
 import UserWidget from 'scenes/widgets/UserWidget';
+import { mobileMediaQuery } from 'utils/consts';
 
 const HomePage = () => {
     const { _id, picturePath } = useSelector((state) => state.user);
-    const isMobileScreen = useMediaQuery('(max-width: 1000px)');
+    const isMobileScreen = useMediaQuery(mobileMediaQuery);
 
     return (
         <div>
@@ -19,7 +20,7 @@ const HomePage = () => {
                 display={'flex'}
                 flexDirection={isMobileScreen ? 'column' : 'row'}
                 justifyContent='space-between'
-                gap={isMobileScreen ? '2rem' : '0.5rem'}
+                gap='2rem'
                 padding='2rem 6%'
             >
                 <Box flexBasis={isMobileScreen ? undefined : '26%'}>

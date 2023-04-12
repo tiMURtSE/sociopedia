@@ -18,8 +18,7 @@ const Friend = ({friendId, name, location, userPicturePath }) => {
     const primaryDark = palette.primary.dark;
     const main = palette.neutral.main;
     const medium = palette.neutral.medium;
-
-    const isFriend = friends.find((friend) => friend._id === friendId);
+    const isFriend = friends.find((friend) => friend === friendId);
     const isLoggedInUser = (friendId === userId) ? true : false;
 
     const addFriend = async () => {

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Form from './Form';
+import { mobileMediaQuery } from 'utils/consts';
 
 const LoginPage = () => {
     const theme = useTheme();
-    const isMobileScreen = useMediaQuery('(max-width: 1000px)');
+    const isMobileScreen = useMediaQuery(mobileMediaQuery);
     const altColor = theme.palette.background.alt;
 
     return (
@@ -27,7 +28,7 @@ const LoginPage = () => {
                 borderRadius='1.5rem'
                 backgroundColor={altColor}
             >
-                <Typography>
+                <Typography sx={{ mb: '4rem' }}>
                     Welcome to Socipedia, the Social Media for Sociopaths!
                 </Typography>
                 <Form />

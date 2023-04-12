@@ -1,14 +1,16 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import Friend from 'components/Friend';
 import WidgetWrapper from 'components/WidgetWrapper';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFriends } from 'state';
 
 const FriendListWidget = ({ userId }) => {
-    const friends = useSelector((state) => state.user.friends);
+    // const friends = useSelector((state) => state.user.friends);
+    const [friends, setFriends] = useState([]);
+    
     const token = useSelector((state) => state.token);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const { palette } = useTheme();
     
@@ -21,7 +23,8 @@ const FriendListWidget = ({ userId }) => {
 
         const friends = await response.json();
 
-        dispatch(setFriends({ friends }));
+        setFriends(friends);
+        // dispatch(setFriends({ friends }));
     };
 
     useEffect(() => {
