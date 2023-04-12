@@ -43,7 +43,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }, []);
 
     return (
-        <Box display='flex' flexDirection='column' gap='1rem' mt='2rem'>
+        <Box display='flex' flexDirection='column' gap='1rem'>
             {[...posts]
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map(post =>

@@ -26,7 +26,12 @@ const HomePage = () => {
                     <UserWidget userId={_id} picturePath={picturePath}/>
                 </Box>
 
-                <Box flexBasis={isMobileScreen ? undefined : '42%'}>
+                <Box 
+                    flexBasis={isMobileScreen ? undefined : '42%'}
+                    display='flex'
+                    flexDirection='column'
+                    gap='2rem'
+                >
                     <MyPostWidget userId={_id} picturePath={picturePath} />
 
                     <PostsWidget userId={_id} isProfile={false}/>

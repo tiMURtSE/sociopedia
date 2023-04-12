@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import UserImage from 'components/UserImage';
 import { useNavigate } from 'react-router-dom';
 
-const UserWidget = ({ userId, picturePath }) => {
+const UserWidget = ({ userId }) => {
     const [user, setUser] = useState(null);
     const token = useSelector((state) => state.token);
     const navigate = useNavigate();
@@ -58,7 +58,7 @@ const UserWidget = ({ userId, picturePath }) => {
                 onClick={() => navigate('/profile/2')}
             >
                 <FlexBetween gap='1rem'>
-                    <UserImage image={picturePath}/>
+                    <UserImage image={user.picturePath}/>
 
                     <Box>
                         <Typography
