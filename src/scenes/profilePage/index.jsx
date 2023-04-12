@@ -9,9 +9,9 @@ import PostsWidget from 'scenes/widgets/PostsWidget';
 import UserWidget from 'scenes/widgets/UserWidget';
 
 const ProfilePage = () => {
+    const [user, setUser] = useState(null);
     const { userId } = useParams();
     const token = useSelector((state) => state.token);
-    const [user, setUser] = useState({});
 
     const isMobileScreen = useMediaQuery('(max-width: 1000px)');
     
@@ -30,6 +30,8 @@ const ProfilePage = () => {
     useEffect(() => {
         getUser();
     }, []);
+
+    if (!user) return null;
 
     return (
         <>
@@ -55,12 +57,7 @@ const ProfilePage = () => {
 
                 <Box 
                     flexBasis={isMobileScreen ? undefined : '42%'}
-                    display='flex'
-                    flexDirection='column'
-                    gap='2rem'
                 >
-                    <MyPostWidget userId={userId} picturePath={user.picturePath} />
-
                     <PostsWidget userId={userId} isProfile={true} />
                 </Box>
             </Box>
